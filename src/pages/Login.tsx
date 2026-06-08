@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { apiRequest } from '../utils/api';
 import { useAuthStore } from '../store/authStore';
+import { User } from '../../shared/types';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Login() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || '/';
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -42,7 +43,7 @@ export default function Login() {
     setSubmitting(true);
     try {
       const response = await apiRequest<{
-        data: { token: string; user: any };
+        data: { token: string; user: User };
       }>('/auth/login', {
         method: 'POST',
         body: JSON.stringify({
@@ -51,7 +52,7 @@ export default function Login() {
         })
       });
 
-      login(response.data.token, response.data.user);
+      login(response.data.user, response.data.token);
       navigate(from, { replace: true });
     } catch (err) {
       console.error('Login error:', err);

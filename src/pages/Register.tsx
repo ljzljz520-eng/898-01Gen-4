@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { apiRequest } from '../utils/api';
 import { useAuthStore } from '../store/authStore';
+import { User as UserType } from '../../shared/types';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export default function Register() {
     setSubmitting(true);
     try {
       const response = await apiRequest<{
-        data: { token: string; user: any };
+        data: { token: string; user: UserType };
       }>('/auth/register', {
         method: 'POST',
         body: JSON.stringify({
@@ -65,7 +66,7 @@ export default function Register() {
         })
       });
 
-      login(response.data.token, response.data.user);
+      login(response.data.user, response.data.token);
       navigate('/', { replace: true });
     } catch (err) {
       console.error('Register error:', err);

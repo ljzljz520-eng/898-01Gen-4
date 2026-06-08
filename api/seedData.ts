@@ -12,7 +12,7 @@ export async function seedDatabase() {
 
   const passwordHash = await bcrypt.hash('password123', 10);
 
-  const userId0 = await run(
+  const _userId0 = await run(
     'INSERT INTO users (username, email, password_hash, is_verified) VALUES (?, ?, ?, ?)',
     ['dev_user', 'dev@example.com', passwordHash, 1]
   );
@@ -81,7 +81,7 @@ export async function seedDatabase() {
     ]
   );
 
-  const answer1 = await run(
+  const _answer1 = await run(
     `INSERT INTO answers (question_id, user_id, content, is_verified, verified_by, vote_count)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [
@@ -108,7 +108,7 @@ export async function seedDatabase() {
     ]
   );
 
-  const answer3 = await run(
+  const _answer3 = await run(
     `INSERT INTO answers (question_id, user_id, content, is_verified, verified_by, vote_count)
      VALUES (?, ?, ?, ?, ?, ?)`,
     [

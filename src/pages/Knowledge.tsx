@@ -61,7 +61,6 @@ export default function Knowledge() {
         data = data.filter(
           (entry) =>
             entry.title.toLowerCase().includes(query) ||
-            entry.questionTitle.toLowerCase().includes(query) ||
             entry.summary.toLowerCase().includes(query)
         );
       }
@@ -190,7 +189,7 @@ export default function Knowledge() {
                         已验证方案
                       </span>
                       <span className="text-xs text-hw-text-secondary">
-                        {categories.find(c => c.id === selectedEntry.category)?.label}
+                        {categories.find(c => c.id === selectedEntry.hardwareType)?.label}
                       </span>
                     </div>
 
@@ -205,7 +204,7 @@ export default function Knowledge() {
                       </span>
                       <span className="flex items-center gap-1.5">
                         <User className="w-4 h-4" />
-                        {selectedEntry.answerAuthor?.username}
+                        {selectedEntry.answer?.user?.username}
                       </span>
                     </div>
 
@@ -217,12 +216,12 @@ export default function Knowledge() {
                       >
                         <div className="flex items-start justify-between gap-4">
                           <h4 className="font-medium text-hw-text mb-2">
-                            {selectedEntry.questionTitle}
+                            {selectedEntry.question?.title || selectedEntry.title}
                           </h4>
                           <ArrowUpRight className="w-4 h-4 text-hw-text-secondary flex-shrink-0" />
                         </div>
                         <p className="text-sm text-hw-text-secondary line-clamp-2">
-                          {selectedEntry.questionContent}
+                          {selectedEntry.question?.description}
                         </p>
                       </Link>
                     </div>
@@ -239,17 +238,17 @@ export default function Knowledge() {
                     <div className="mb-8">
                       <h3 className="font-semibold text-hw-text mb-3">完整方案</h3>
                       <div className="markdown-content">
-                        {selectedEntry.content.split('\n').map((line, i) => (
+                        {selectedEntry.answer?.content?.split('\n').map((line, i) => (
                           <p key={i}>{line}</p>
                         ))}
                       </div>
                     </div>
 
-                    {selectedEntry.attachments && selectedEntry.attachments.length > 0 && (
+                    {(selectedEntry.question?.attachments || selectedEntry.answer?.attachments) && (
                       <div>
                         <h3 className="font-semibold text-hw-text mb-3">相关附件</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {selectedEntry.attachments.map((attachment) => (
+                          {[...(selectedEntry.question?.attachments || []), ...(selectedEntry.answer?.attachments || [])].map((attachment) => (
                             <div
                               key={attachment.id}
                               className="flex items-center gap-3 p-4 bg-hw-bg border border-hw-border rounded-xl"
@@ -305,7 +304,7 @@ export default function Knowledge() {
                                 已验证
                               </span>
                               <span className="text-xs text-hw-text-secondary">
-                                {categories.find(c => c.id === entry.category)?.label}
+                                {categories.find(c => c.id === entry.hardwareType)?.label}
                               </span>
                               <span className="text-xs text-hw-text-secondary">
                                 • {formatDate(entry.createdAt)}
@@ -323,7 +322,7 @@ export default function Knowledge() {
                             <div className="flex items-center gap-4 text-xs text-hw-text-secondary">
                               <span className="flex items-center gap-1">
                                 <User className="w-3.5 h-3.5" />
-                                {entry.answerAuthor?.username}
+                                {entry.answer?.user?.username}
                               </span>
                               <span className="flex items-center gap-1">
                                 <BookOpen className="w-3.5 h-3.5" />

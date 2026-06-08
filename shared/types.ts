@@ -62,12 +62,6 @@ export interface KnowledgeEntry {
   tags: string[];
   hardwareType: string;
   createdAt: string;
-  category?: string;
-  questionTitle?: string;
-  questionContent?: string;
-  content?: string;
-  answerAuthor?: User;
-  attachments?: Attachment[];
   question?: Question;
   answer?: Answer;
 }

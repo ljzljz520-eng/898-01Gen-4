@@ -43,7 +43,7 @@ export function all<T>(sql: string, params: any[] = []): Promise<T[]> {
 }
 
 export function initializeDatabase(): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     db.serialize(() => {
       db.run(`
         CREATE TABLE IF NOT EXISTS users (

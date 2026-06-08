@@ -26,9 +26,13 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
       isVerified: boolean;
     };
     req.userId = decoded.userId;
-    req.user = decoded;
+    req.user = {
+      id: decoded.userId,
+      username: decoded.username,
+      isVerified: decoded.isVerified
+    };
     next();
-  } catch (error) {
+  } catch (_error) {
     return res.status(401).json({ error: '无效的认证令牌' });
   }
 }
@@ -44,8 +48,12 @@ export function optionalAuthMiddleware(req: AuthRequest, res: Response, next: Ne
         isVerified: boolean;
       };
       req.userId = decoded.userId;
-      req.user = decoded;
-    } catch (error) {
+      req.user = {
+        id: decoded.userId,
+        username: decoded.username,
+        isVerified: decoded.isVerified
+      };
+    } catch (_error) {
       // Token 无效，继续作为匿名用户
     }
   }
